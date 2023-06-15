@@ -9,7 +9,6 @@ import Contact from "./ContactComponent";
 import { COMMENTS } from "../shared/comments";
 import { PROMOTIONS } from "../shared/promotions";
 import { LEADERS } from "../shared/leaders";
-
 import { Routes, Route, Navigate } from "react-router-dom";
 
 class Main extends Component {
@@ -23,10 +22,20 @@ class Main extends Component {
       leaders: LEADERS,
     };
   }
+ 
+
 
   onDishSelect(dishId) {
     this.setState({ selectedDish: dishId });
   }
+  const DishWithId = () => {
+    const {dishId} = useParams();
+    return(
+        <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(dishId,10))[0]} 
+          comments={this.state.comments.filter((comment) => comment.dishId === parseInt(dishId,10))} />
+    );
+  };
+
 
   render() {
     const HomePage = () => {
@@ -48,6 +57,7 @@ class Main extends Component {
           <Route exact path="/menu" Component={() => <Menu dishes={this.state.dishes} />} />
           <Route to="/home" element={<Navigate to="/Menu" />} />
           <Route exact path="/contactus" Component={Contact} />
+          <Route path='/menu/:dishId' component={DishWithId} />
         </Routes>
         <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
         <Footer />
