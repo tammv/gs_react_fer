@@ -1,13 +1,11 @@
-// import { Navbar, NavbarBrand } from "reactstrap";
 import DishDetail from "./DishesComponent";
-
 import React, { Component } from "react";
 import Menu from "./MenuComponent";
 import { DISHES } from "../shared/Dishes";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 class Main extends Component {
   constructor(props) {
@@ -28,48 +26,23 @@ class Main extends Component {
     };
 
     return (
-      <div>
-        <Header />
-        <Routes>
-          <Route path="/home" Component={HomePage} />
-          <Route
-            exact
-            path="/menu"
-            element={
-              <Menu
-                dishes={this.state.dishes}
-                onClick={(dishId) => this.onDishSelect(dishId)}
-              />
-            }
-          />
-          <Route path="/home" element={<Navigate to="/Menu"></Navigate>} />
-        </Routes>
-        <Footer />
-      </div>
+      <Router>
+        <div>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route
+              path="/menu"
+              element={<Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)} />}
+            />
+            <Route path="/menu/:dishId" element={<DishDetail dishes={this.state.dishes} />} />
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
     );
   }
-
-  // render() {
-  //   return (
-  //     <div>
-  //       <div className="header">
-  //         <Header />
-  //       </div>
-  //       <Menu
-  //         dishes={this.state.dishes}
-  //         onClick={(dishId) => this.onDishSelect(dishId)}
-  //       />
-  //       <DishDetail
-  //         dish={
-  //           this.state.dishes.filter(
-  //             (dish) => dish.id === this.state.selectedDish
-  //           )[0]
-  //         }
-  //       />
-  //       <Footer />
-  //     </div>
-  //   );
-  // }
 }
 
 export default Main;
